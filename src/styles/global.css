@@ -43,10 +43,11 @@
   --font-serif:
     "Literata Variable", ui-serif, Georgia, Cambria, "Times New Roman", Times,
     serif;
+  --color-zag-pink: var(--color-zag-pink);
   --color-zag-dark: var(--color-neutral-900);
   --color-zag-dark-opaque: oklch(from var(--color-neutral-900) l c h / 0.5);
-  --color-zag-light: var(--color-neutral-100);
-  --color-zag-light-opaque: oklch(from var(--color-neutral-100) l c h / 0.5);
+  --color-zag-light: var(--color-neutral-300);
+  --color-zag-light-opaque: oklch(from var(--color-neutral-300) l c h / 0.5);
   --color-zag-dark-muted: var(--color-neutral-600);
   --color-zag-light-muted: var(--color-neutral-400);
   --color-zag-accent-light: var(--color-emerald-400);
@@ -61,6 +62,7 @@
     --zag-offset: 6px;
     --zag-transition-duration: 0.15s;
     --zag-transition-timing-function: ease-in-out;
+    --color-zag-pink: #eb0dd1;
   }
 
   ::selection {
@@ -147,7 +149,7 @@
 
   .hover-zag-dotted-grid:hover::before {
     --dot-bg: var(--color-zag-light);
-    --dot-color: var(--color-zag-dark-muted);
+    --dot-color: var(--color-zag-pink);
     --dot-size: 1.5px;
     --dot-space: 16px;
     content: "";
@@ -176,7 +178,7 @@
 
   :where(.dark, .dark *) .hover-zag-dotted-grid:hover::before {
     --dot-bg: var(--color-zag-dark);
-    --dot-color: var(--color-zag-light-muted);
+    --dot-color: var(--color-zag-pink);
   }
 
   .hover-zag-dotted-grid:hover::after {
@@ -208,5 +210,62 @@
 
   .opsz {
     font-variation-settings: "opsz" 72;
+  }
+
+  /* Running pink line animation */
+  @keyframes pink-sweep {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .zag-border-animated {
+    position: relative;
+  }
+
+  .zag-border-animated::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 30%,
+      var(--color-zag-pink) 50%,
+      transparent 70%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: pink-sweep 4s linear infinite;
+  }
+
+  /* Rotating pink border for avatar */
+  @keyframes rotate-border {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .zag-avatar-border {
+    position: relative;
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 3px;
+  }
+
+  .zag-avatar-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: conic-gradient(
+      from 0deg,
+      var(--color-zag-pink),
+      #ff80f0,
+      #a000a0,
+      var(--color-zag-pink)
+    );
+    animation: rotate-border 3s linear infinite;
   }
 }
