@@ -3,6 +3,12 @@ import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { parse as parseToml } from "toml";
 
+const resolveUrl = (siteUrl: string, path?: string) =>
+  path ? (path.startsWith("http") ? path : `${siteUrl}${path}`) : undefined;
+
+const getSiteUrl = (fallback?: string) =>
+  import.meta.env.PUBLIC_SITE_URL ?? fallback ?? "";
+
 /**
  * Loader and schema for the configuration collection.
  * It loads a TOML file from the `content/configuration.toml` path and defines the schema for the configuration data.
@@ -20,7 +26,7 @@ const configuration = defineCollection({
        * This should be the base URL of your live site,
        * and is used to generate absolute URLs for links and metadata.
        */
-      baseUrl: z.url(),
+      baseUrl: z.string(),
     }),
 
     /**
@@ -46,7 +52,7 @@ const configuration = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * Keywords for SEO, used in the `<meta name="keywords">` tag.
@@ -73,7 +79,7 @@ const configuration = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * Keywords for SEO, used in the `<meta name="keywords">` tag.
@@ -103,7 +109,7 @@ const configuration = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * Keywords for SEO, used in the `<meta name="keywords">` tag.
@@ -133,7 +139,7 @@ const configuration = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * Keywords for SEO, used in the `<meta name="keywords">` tag.
@@ -158,7 +164,7 @@ const configuration = defineCollection({
       /**
        * The URL of the hero image, used as a background image in the hero section.
        */
-      image: z.url().optional(),
+      image: z.string().optional(),
 
       /**
        * The text displayed in the call-to-action button in the hero section.
@@ -236,6 +242,18 @@ const configuration = defineCollection({
       blog: z.string().default("/blog"),
       /** Add other menu items here **/
     }),
+  }).transform((data) => {
+    const siteUrl = getSiteUrl(data.site.baseUrl);
+    const resolve = (path?: string) => resolveUrl(siteUrl, path);
+    return {
+      ...data,
+      site: { ...data.site, baseUrl: siteUrl },
+      globalMeta: { ...data.globalMeta, cardImage: resolve(data.globalMeta.cardImage) },
+      notFoundMeta: { ...data.notFoundMeta, cardImage: resolve(data.notFoundMeta.cardImage) },
+      blogMeta: { ...data.blogMeta, cardImage: resolve(data.blogMeta.cardImage) },
+      projectMeta: { ...data.projectMeta, cardImage: resolve(data.projectMeta.cardImage) },
+      hero: { ...data.hero, image: resolve(data.hero.image) },
+    };
   }),
 });
 
@@ -270,7 +288,7 @@ const blog = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * The tags associated with the blog post, used for categorization and filtering.
@@ -299,11 +317,12 @@ const blog = defineCollection({
           .toLowerCase()
           .replace(/\s+/g, "-")
           .replace(/[^\w-]/g, "");
-      const newData = {
+      const siteUrl = getSiteUrl();
+      return {
         ...data,
         slug,
+        cardImage: resolveUrl(siteUrl, data.cardImage),
       };
-      return newData;
     }),
 });
 
@@ -338,7 +357,7 @@ const project = defineCollection({
       /**
        * The URL of the card image for social media sharing.
        */
-      cardImage: z.url().optional(),
+      cardImage: z.string().optional(),
 
       /**
        * The tags associated with the project, used for categorization and filtering.
@@ -372,11 +391,12 @@ const project = defineCollection({
           .toLowerCase()
           .replace(/\s+/g, "-")
           .replace(/[^\w-]/g, "");
-      const newData = {
+      const siteUrl = getSiteUrl();
+      return {
         ...data,
         slug,
+        cardImage: resolveUrl(siteUrl, data.cardImage),
       };
-      return newData;
     }),
 });
 
