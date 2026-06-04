@@ -41,6 +41,8 @@ const { data: config } = await getConfigurationCollection();
           <Anchor
             url={config.personal.githubProfile}
             aria-label={`${config.personal.name} GitHub Profile`}
+            external
+            noExternalIcon
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

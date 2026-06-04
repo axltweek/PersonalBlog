@@ -45,7 +45,7 @@ const year = date.getFullYear();
       <div class="flex flex-row sm:flex-col gap-4">
         {
           config.personal.githubProfile && (
-            <Anchor url={config.personal.githubProfile} aria-label={`${config.personal.name} GitHub Profile`}>
+            <Anchor url={config.personal.githubProfile} aria-label={`${config.personal.name} GitHub Profile`} external noExternalIcon>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -63,7 +63,7 @@ const year = date.getFullYear();
         }
         {
           config.personal.devtoProfile && (
-            <Anchor url={config.personal.devtoProfile} aria-label={`${config.personal.name} dev.to Profile`}>
+            <Anchor url={config.personal.devtoProfile} aria-label={`${config.personal.name} dev.to Profile`} external noExternalIcon>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -87,7 +87,7 @@ const year = date.getFullYear();
         }
         {
           config.personal.linkedinProfile && (
-            <Anchor url={config.personal.linkedinProfile} aria-label={`${config.personal.name} LinkedIn Profile`}>
+            <Anchor url={config.personal.linkedinProfile} aria-label={`${config.personal.name} LinkedIn Profile`} external noExternalIcon>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -106,7 +106,7 @@ const year = date.getFullYear();
         }
         {
           config.personal.untappdProfile && (
-            <Anchor url={config.personal.untappdProfile} aria-label={`${config.personal.name} Untappd Profile`}>
+            <Anchor url={config.personal.untappdProfile} aria-label={`${config.personal.name} Untappd Profile`} external noExternalIcon>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"

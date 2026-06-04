@@ -3,10 +3,11 @@ export type Props = {
 	url: string;
 	class?: string;
 	external?: boolean;
+	noExternalIcon?: boolean;
 	"aria-label"?: string;
 };
 
-const { url, external, class: className } = Astro.props;
+const { url, external, noExternalIcon, class: className } = Astro.props;
 ---
 
 <a
@@ -20,7 +21,7 @@ const { url, external, class: className } = Astro.props;
 >
   <slot />
   {
-    external ? (
+    external && !noExternalIcon ? (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="w-6 h-6"
