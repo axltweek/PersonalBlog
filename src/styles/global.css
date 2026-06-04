@@ -43,7 +43,8 @@
   --font-serif:
     "Literata Variable", ui-serif, Georgia, Cambria, "Times New Roman", Times,
     serif;
-  --color-zag-pink: var(--color-zag-pink);
+  --color-zag-pink: #eb0dd1;
+  --color-zag-pink-muted: #a9549f;
   --color-zag-dark: var(--color-neutral-900);
   --color-zag-dark-opaque: oklch(from var(--color-neutral-900) l c h / 0.5);
   --color-zag-light: var(--color-neutral-300);
@@ -62,7 +63,6 @@
     --zag-offset: 6px;
     --zag-transition-duration: 0.15s;
     --zag-transition-timing-function: ease-in-out;
-    --color-zag-pink: #eb0dd1;
   }
 
   ::selection {
@@ -210,6 +210,20 @@
 
   .opsz {
     font-variation-settings: "opsz" 72;
+  }
+
+  /* Quote color pulse animation */
+  @keyframes pink-pulse {
+    0%, 100% { color: var(--zag-pulse-base); }
+    50% { color: var(--color-zag-pink-muted); }
+  }
+
+  .zag-quote-pulse {
+    --zag-pulse-base: var(--color-zag-dark);
+    animation: pink-pulse 8s ease-in-out infinite;
+    :where(.dark, .dark *) & {
+      --zag-pulse-base: var(--color-zag-light);
+    }
   }
 
   /* Running pink line animation */

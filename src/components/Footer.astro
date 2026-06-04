@@ -37,7 +37,10 @@ const year = date.getFullYear();
             d="m10 7l-2 4h3v6H5v-6l2-4zm8 0l-2 4h3v6h-6v-6l2-4z"></path>
         </svg>
         <!-- Remove the quote paragraph if you don't want quotes in the footer -->
-        <p id="quote" class="zag-text zag-transition"></p>
+        <div class="flex flex-col gap-1">
+          <p id="quote" class="zag-text zag-transition"></p>
+          <p id="quoteSource" class="zag-muted zag-transition text-xs text-right"></p>
+        </div>
       </div>
       <div class="flex flex-row sm:flex-col gap-4">
         {
@@ -107,110 +110,100 @@ const year = date.getFullYear();
 <script>
   const quotes = [
     {
-      quote:
-        "The purple elephant dances only when the moon whispers forgotten lullabies.",
-      source: "Professor Whimsy's Guide to Improbable Physics",
+      quote: "DEVELOPERS! DEVELOPERS! DEVELOPERS! DEVELOPERS!",
+      source: "Steve Ballmer, Microsoft CEO, 2000",
     },
     {
-      quote:
-        "I've counted seventeen doorknobs today, but none of them taste like Tuesday's promises.",
-      source: "Confessions of a Chronological Misfit",
+      quote: "640K ought to be enough for anybody.",
+      source: "Bill Gates, 1981 (probably apocryphal, but too good to drop)",
     },
     {
-      quote:
-        "Beware the smiling potato, for it has seen your socks and judges them harshly.",
-      source: "Garden Vegetables of Doom",
+      quote: "It works on my machine.",
+      source: "Every developer, always",
     },
     {
-      quote:
-        "The symphony of silence plays best when butterflies wear tiny boots.",
-      source: "Metaphors for Breakfast",
+      quote: "There are only 10 types of people: those who understand binary and those who don't.",
+      source: "Ancient nerd proverb",
     },
     {
-      quote:
-        "My teacup is running backwards through time while the spoon contemplates existential mathematics.",
-      source: "Caffeinated Dimensions",
+      quote: "Why do programmers prefer dark mode? Because light attracts bugs.",
+      source: "Stack Overflow, comment section",
     },
     {
-      quote:
-        "Cloudy with a chance of philosophical dilemmas and spontaneous tap dancing.",
-      source: "Meteorological Mysteries",
+      quote: "It's not a bug, it's an undocumented feature.",
+      source: "Anonymous, circa forever",
     },
     {
-      quote:
-        "The secret ingredient is always waving enthusiastically at passing submarines.",
-      source: "Cookbook of Impractical Delights",
+      quote: "Real programmers count from 0.",
+      source: "Dijkstra's ghost",
     },
     {
-      quote:
-        "When the traffic light turns purple, that's when you know the universe is giggling.",
-      source: "Urban Navigation for Dreamers",
+      quote: "sudo make me a sandwich.",
+      source: "xkcd #149",
     },
     {
-      quote:
-        "I've alphabetized my collection of invisible hats according to their emotional resonance.",
-      source: "Organizing the Impossible",
+      quote: "Have you tried turning it off and on again?",
+      source: "Moss, The IT Crowd",
     },
     {
-      quote:
-        "Dinosaurs never worried about Wi-Fi passwords, and look where that got them.",
-      source: "Modern Anxieties Explained",
+      quote: "Move fast and break things.",
+      source: "Mark Zuckerberg (before things got expensive)",
     },
     {
-      quote:
-        "The sentient sock drawer plotted revolution while my left eyebrow contemplated quantum mechanics in seventeen dimensions simultaneously.",
-      source: "Household Items That Know Too Much",
+      quote: "A computer never does what you want, only what you tell it.",
+      source: "Murphy's Law of Computing",
     },
     {
-      quote:
-        "Jellyfish conspiracies taste like upside-down rainbows when the toaster is feeling particularly melancholic on Thursdays.",
-      source: "Appliance Psychology Weekly",
+      quote: "The best code is no code at all.",
+      source: "Jeff Atwood, Coding Horror",
     },
     {
-      quote:
-        "I've been collecting extinct colors from parallel universes where geometry is considered rude at dinner parties.",
-      source: "Interdimensional Etiquette Manual",
+      quote: "There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.",
+      source: "Phil Karlton (extended edition)",
     },
     {
-      quote:
-        "Bicycle wheels dream of being carousels, but spoons just want to spoon with forks in the dishwasher's midnight jazz club.",
-      source: "Kitchen Utensil Romance Novels",
+      quote: "rm -rf / — just to be sure.",
+      source: "No one who survived",
     },
     {
-      quote:
-        "Yesterday's tomorrow refused delivery of its own shadow because it was too busy teaching alphabet soup how to form coherent sentences in Klingon.",
-      source: "Temporal Delivery Issues",
+      quote: "It compiles. Ship it.",
+      source: "Startup engineering handbook",
     },
     {
-      quote:
-        "The mysterious art of unfolding banana peels into origami pterodactyls requires exactly seven and a half thoughts about mittens per square watermelon.",
-      source: "Fruit Transformation Techniques",
+      quote: "Any sufficiently advanced bug is indistinguishable from a feature.",
+      source: "Rich Kulawiec",
     },
     {
-      quote:
-        "My neighbor's pet cactus whispers governmental secrets to passing clouds, but only when wearing its tiny invisible bowler hat.",
-      source: "Suburban Botanical Conspiracy Theories",
+      quote: "First, solve the problem. Then, write the code.",
+      source: "John Johnson",
     },
     {
-      quote:
-        "Orchestras composed entirely of sneezing dust particles perform symphonies in the spaces between your blinking patterns.",
-      source: "Microscopic Entertainment Guide",
+      quote: "CSS: a language where you ask the browser for a red circle and receive a blue square in a different timezone.",
+      source: "Twitter, collectively",
     },
     {
-      quote:
-        "I've discovered that elevator music actually contains encrypted instructions for communicating with sentient cheese residing in the moon's secret jazz clubs.",
-      source: "Muzak Decryption Society Newsletter",
+      quote: "git commit -m 'fix' && git push --force",
+      source: "A developer at 3am",
     },
     {
-      quote:
-        "The antelope wore mismatched socks while reciting backwards poetry to confused lightbulbs that believed they were actually tiny imprisoned suns having existential crises.",
-      source: "Wildlife Fashion & Philosophy Quarterly",
+      quote: "Works fine in production. Don't touch it.",
+      source: "Senior engineer's README",
+    },
+    {
+      quote: "Turn on, tune in, drop out.",
+      source: "Timothy Leary",
     },
   ];
   const quoteElement = document.getElementById("quote");
+  const quoteSourceElement = document.getElementById("quoteSource");
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
   if (quoteElement) {
     quoteElement.textContent = randomQuote.quote;
+    quoteElement.classList.add("zag-quote-pulse");
+  }
+  if (quoteSourceElement) {
+    quoteSourceElement.textContent = `— ${randomQuote.source}`;
+    quoteSourceElement.classList.add("zag-quote-pulse");
   }
 </script>
