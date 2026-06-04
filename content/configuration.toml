@@ -43,6 +43,7 @@ name = "Zaggonaut"
 githubProfile = "https://github.com/RATIU5/zaggonaut"
 devtoProfile = "https://dev.to"
 linkedinProfile = "https://linkedin.com/"
+untappdProfile = "https://untappd.com"
 
 [_.texts]
 articlesName = "Articles"

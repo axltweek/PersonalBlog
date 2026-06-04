@@ -200,6 +200,11 @@ const configuration = defineCollection({
        * The LinkedIn profile URL of the site owner or author.
        */
       linkedinProfile: z.url().optional(),
+
+      /**
+       * The Untappd profile URL of the site owner or author.
+       */
+      untappdProfile: z.url().optional(),
     }),
 
     /**
