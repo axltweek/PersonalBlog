@@ -46,15 +46,62 @@ const { data: config } = await getConfigurationCollection();
     <link rel="canonical" href={config.site.baseUrl} />
   </Fragment>
   <Section class="mt-16">
-    <h1 class="text-3xl sm:text-4xl font-display pb-8">
-      Well, this is awkward
+    <h1 id="game-over" class="text-3xl sm:text-4xl font-display pb-4">
+      GAME OVER
     </h1>
-    <h2 class="text-xl sm:text-2xl pb-8">404 - Page not found</h2>
-    <p>
-      It seems that this page does not exist. If you want to return to safety, <a
-        class="underline underline-offset-4 font-medium"
-        href="/">click here to go home</a
-      >.
+    <h2 class="text-xl sm:text-2xl font-mono pb-6">
+      404 — This page was not found.<br />Insert coin to continue.
+    </h2>
+    <p class="font-mono text-sm pb-8">
+      &gt; <span id="blink" class="inline-block">_</span>
     </p>
+    <a class="underline underline-offset-4 font-medium font-mono" href="/">
+      [ PRESS START / GO HOME ]
+    </a>
   </Section>
+
+  <style>
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    #blink {
+      animation: blink 1s step-start infinite;
+    }
+    #game-over { color: var(--color-zag-pink); }
+  </style>
+
+  <script>
+    const el = document.getElementById("game-over")!;
+    const original = el.textContent!.trim();
+    const chars = "アイウエオ#$%@!?&ABCDEFGHIJKLMNOPQRSTUVWXYZ01";
+    const rand = () => chars[Math.floor(Math.random() * chars.length)];
+    const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+
+    async function scrambleIn() {
+      // fast scramble
+      for (let i = 0; i < 10; i++) {
+        el.textContent = Array.from({ length: original.length }, rand).join("");
+        await sleep(50);
+      }
+      // resolve left to right
+      for (let i = 0; i < original.length; i++) {
+        for (let s = 0; s < 3; s++) {
+          el.textContent = original.slice(0, i) +
+            Array.from({ length: original.length - i }, rand).join("");
+          await sleep(40);
+        }
+      }
+      el.textContent = original;
+    }
+
+    async function loop() {
+      while (true) {
+        await sleep(2500); // readable pause
+        await scrambleIn();
+      }
+    }
+
+    loop();
+  </script>
 </Layout>
