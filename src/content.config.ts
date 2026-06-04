@@ -192,9 +192,9 @@ const configuration = defineCollection({
       githubProfile: z.url().optional(),
 
       /**
-       * The Twitter profile URL of the site owner or author.
+       * The dev.to profile URL of the site owner or author.
        */
-      twitterProfile: z.url().optional(),
+      devtoProfile: z.url().optional(),
 
       /**
        * The LinkedIn profile URL of the site owner or author.
