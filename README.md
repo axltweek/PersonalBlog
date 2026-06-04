@@ -1,67 +1,84 @@
-![Zaggonaut, a retro-inspired theme for Astro.](./images/README.png)
+```
+         ██████╗ ███████╗██████╗ ███████╗ ██████╗ ███╗   ██╗ █████╗ ██╗     
+         ██╔══██╗██╔════╝██╔══██╗██╔════╝██╔═══██╗████╗  ██║██╔══██╗██║     
+         ██████╔╝█████╗  ██████╔╝███████╗██║   ██║██╔██╗ ██║███████║██║     
+         ██╔═══╝ ██╔══╝  ██╔══██╗╚════██║██║   ██║██║╚██╗██║██╔══██║██║     
+         ██║     ███████╗██║  ██║███████║╚██████╔╝██║ ╚████║██║  ██║███████╗
+         ╚═╝     ╚══════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
+                                                                            
+                         ██████╗ ██╗      ██████╗  ██████╗                  
+                         ██╔══██╗██║     ██╔═══██╗██╔════╝                  
+                         ██████╔╝██║     ██║   ██║██║  ███╗                 
+                         ██╔══██╗██║     ██║   ██║██║   ██║                 
+                         ██████╔╝███████╗╚██████╔╝╚██████╔╝                 
+                         ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝                  
+                                                                   
+```
+> **Built with [Astro](https://astro.build) and the [Zaggonaut](https://github.com/RATIU5/zaggonaut) theme.**
 
-Zaggonaut is a retro-inspired black & white theme for Astro, built using TypeScript, TailwindCSS, and of course, Astro.
+## Requirements
 
-> [!NOTE]  
-> Introducing Zaggonaut 2.0!
-> This is a complete rewrite of the internal content layer, making use of Astro's new Content Collections feature, among other enhancements.
-
-If you are looking for the original Zaggonaut theme, you can find it [on the v1 branch](https://github.com/RATIU5/zaggonaut/tree/v1).
+- Node.js v22+
+- pnpm
 
 ## Getting Started
 
-[View the demo](https://zaggonaut.dev) or [view the source code](https://github.com/RATIU5/zaggonaut).
-
-Alternatively, you can create a new Astro project with Zaggonaut like this:
-
 ```bash
-# pnpm
-pnpm create astro@latest --template RATIU5/zaggonaut
+pnpm install
+pnpm dev
 ```
 
-> [!IMPORTANT]  
-> Currently, `pnpm` is the only supported package manager due to `pnpm` throwing peer-dependency conflicts.
+The dev server runs at `http://localhost:4321` by default.
 
-## Features
+## Environment Variables
 
-- Content Collections
-- Dark & light mode
-- Customizable colors
-- 100 / 100 Lighthouse score
-- Fully accessible
-- Fully responsive
-- Type-safe
-- SEO-friendly
+Create a `.env` file in the project root:
 
-## Customization
+```
+PUBLIC_SITE_URL=http://localhost:4321
+```
 
-The entire theme is fully customizable. The theme is setup a specific way to make it easy to customize.
+For production, set `PUBLIC_SITE_URL` to your actual domain before building.
 
-### Colors
+## Configuration
 
-You can customize the colors of the theme by editing the `src/styles/global.css` file.
-This file uses Tailwind CSS and CSS variables to customize the colors of the theme.
-Zaggonaut uses the following CSS variables:
+All site settings live in `content/configuration.toml` — name, bio, social links, page metadata, and navigation.
 
-- `--color-zag-dark`: The dark color of the theme
-- `--color-zag-light`: The light color of the theme
-- `--color-zag-dark-muted`: The dark color of the theme with a slight opacity
-- `--color-zag-light-muted`: The light color of the theme with a slight opacity
-- `--color-zag-accent-light`: The light accent color of the theme
-- `--color-zag-accent-light-muted`: The light accent color of the theme with a slight opacity
-- `--color-zag-accent-dark`: The dark accent color of the theme
-- `--color-zag-accent-dark-muted`: The dark accent color of the theme with a slight opacity
+## Adding Content
 
-### Content Customization
+**Blog post** — create a `.md` file in `content/blogs/`:
 
-95% of the content you'll want to customize will be located inside the `content` directory. Let's break down the specific files/directories you may want to edit:
+```markdown
+---
+title: My Post Title
+description: Short description for SEO and previews.
+timestamp: 2026-06-03
+tags: ["astro", "web"]
+featured: false
+---
 
-- `content/configuration.toml`: This file contains the site configuration, such as metadata, social links, and text content.
+Post content here...
+```
 
-- `content/blogs/`: This directory contains your blog posts. Each post is a Markdown file with metadata in the frontmatter at the top.
+**Project** — create a `.md` file in `content/projects/`:
 
-- `content/projects/`: This directory contains your projects. Each project is a Markdown file also with metadata in the frontmatter.
+```markdown
+---
+title: My Project
+description: What this project does.
+timestamp: 2026-06-03
+githubUrl: https://github.com/you/project
+liveDemoUrl: https://project.example.com
+tags: ["typescript"]
+featured: false
+---
 
-## Ready To Try?
+Project details here...
+```
 
-Check out [the theme website](https://zaggonaut.dev) to give it a spin!
+## Building for Production
+
+```bash
+pnpm build
+pnpm preview
+```
