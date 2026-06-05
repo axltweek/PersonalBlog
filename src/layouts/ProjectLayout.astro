@@ -11,6 +11,7 @@ type Props = { frontmatter: ProjectFrontmatter };
 
 const { frontmatter } = Astro.props;
 const { data: config } = await getConfigurationCollection();
+const ogImage = frontmatter.cardImage ?? `${config.site.baseUrl}/og/projects/${frontmatter.slug}.png`;
 ---
 
 <Layout>
@@ -19,7 +20,7 @@ const { data: config } = await getConfigurationCollection();
       title={`${frontmatter.title} • ${config.personal.name}`}
       description={frontmatter.description}
       longDescription={frontmatter.longDescription}
-      cardImage={frontmatter.cardImage}
+      cardImage={ogImage}
       keywords={frontmatter.tags}
       url={`${config.site.baseUrl}/projects/${frontmatter.slug}`}
       languageCode={config.site.languageCode}

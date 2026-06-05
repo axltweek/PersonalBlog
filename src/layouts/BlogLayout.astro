@@ -11,6 +11,7 @@ type Props = { frontmatter: ArticleFrontmatter };
 const { frontmatter } = Astro.props;
 const articleDate = processArticleDate(frontmatter.timestamp);
 const { data: config } = await getConfigurationCollection();
+const ogImage = frontmatter.cardImage ?? `${config.site.baseUrl}/og/blog/${frontmatter.slug}.png`;
 ---
 
 <Layout>
@@ -19,7 +20,7 @@ const { data: config } = await getConfigurationCollection();
       title={`${frontmatter.title} • ${config.personal.name}`}
       description={frontmatter.description}
       longDescription={frontmatter.longDescription}
-      cardImage={frontmatter.cardImage}
+      cardImage={ogImage}
       keywords={frontmatter.tags}
       url={`${config.site.baseUrl}/blog/${frontmatter.slug}`}
       languageCode={config.site.languageCode}
