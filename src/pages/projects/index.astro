@@ -4,6 +4,7 @@ import Section from "../../components/common/Section.astro";
 import ProjectSnippet from "../../components/ProjectSnippet.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getConfigurationCollection } from "../../lib/utils";
+import MetaTags from "../../components/common/MetaTags.astro";
 
 const projects = (await getCollection("project")).sort(
 	(a, b) => b.data.timestamp.valueOf() - a.data.timestamp.valueOf(),
@@ -14,35 +15,16 @@ const { data: config } = await getConfigurationCollection();
 
 <Layout>
   <Fragment slot="head">
-    <title>{config.projectMeta.title}</title>
-    <meta
-      name="description"
-      content={config.projectMeta.longDescription ?? config.projectMeta.description}
+    <MetaTags
+      title={config.projectMeta.title}
+      description={config.projectMeta.description}
+      longDescription={config.projectMeta.longDescription}
+      cardImage={config.projectMeta.cardImage}
+      keywords={config.projectMeta.keywords}
+      url={`${config.site.baseUrl}/projects`}
+      languageCode={config.site.languageCode}
+      languageName={config.site.languageName}
     />
-    <meta property="og:title" content={config.projectMeta.title} />
-    <meta
-      property="og:description"
-      content={config.projectMeta.description}
-    />
-    {config.projectMeta.keywords && (
-      <meta name="keywords" content={config.projectMeta.keywords.join(", ")} />
-    )}
-    {config.projectMeta.cardImage && (
-      <meta property="og:image" content={config.projectMeta.cardImage} />
-    )}
-    <meta property="og:url" content={`${config.site.baseUrl}/projects`} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={config.projectMeta.title} />
-    <meta
-      name="twitter:description"
-      content={config.projectMeta.description}
-    />
-    {config.projectMeta.cardImage && (
-      <meta name="twitter:image" content={config.projectMeta.cardImage} />
-    )}
-    <meta http-equiv="content-language" content={config.site.languageCode} />
-    <meta name="language" content={config.site.languageName} />
-    <link rel="canonical" href={`${config.site.baseUrl}/projects`} />
   </Fragment>
   <Section class="py-4 my-8">
     <div class="flex items-center gap-4 pt-8 pb-16">

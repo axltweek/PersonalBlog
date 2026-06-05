@@ -5,6 +5,7 @@ import Prose from "../components/Prose.astro";
 import type { ProjectFrontmatter } from "../lib/types";
 import { getConfigurationCollection, processArticleDate } from "../lib/utils";
 import Layout from "./Layout.astro";
+import MetaTags from "../components/common/MetaTags.astro";
 
 type Props = { frontmatter: ProjectFrontmatter };
 
@@ -14,46 +15,15 @@ const { data: config } = await getConfigurationCollection();
 
 <Layout>
   <Fragment slot="head">
-    <title>{`${frontmatter.title} • ${config.personal.name}`}</title>
-    <meta
-      name="description"
-      content={frontmatter.longDescription ?? frontmatter.description}
-    />
-    <meta
-      property="og:title"
-      content={`${frontmatter.title} • ${config.personal.name}`}
-    />
-    <meta property="og:description" content={frontmatter.description} />
-    {
-      frontmatter.tags && (
-        <meta name="keywords" content={frontmatter.tags.join(", ")} />
-      )
-    }
-    {
-      frontmatter.cardImage && (
-        <meta property="og:image" content={frontmatter.cardImage} />
-      )
-    }
-    <meta
-      property="og:url"
-      content={`${config.site.baseUrl}/projects/${frontmatter.slug}`}
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content={`${frontmatter.title} • ${config.personal.name}`}
-    />
-    <meta name="twitter:description" content={frontmatter.description} />
-    {
-      frontmatter.cardImage && (
-        <meta name="twitter:image" content={frontmatter.cardImage} />
-      )
-    }
-    <meta http-equiv="content-language" content={config.site.languageCode} />
-    <meta name="language" content={config.site.languageName} />
-    <link
-      rel="canonical"
-      href={`${config.site.baseUrl}/projects/${frontmatter.slug}`}
+    <MetaTags
+      title={`${frontmatter.title} • ${config.personal.name}`}
+      description={frontmatter.description}
+      longDescription={frontmatter.longDescription}
+      cardImage={frontmatter.cardImage}
+      keywords={frontmatter.tags}
+      url={`${config.site.baseUrl}/projects/${frontmatter.slug}`}
+      languageCode={config.site.languageCode}
+      languageName={config.site.languageName}
     />
   </Fragment>
   <Section class="mt-8">

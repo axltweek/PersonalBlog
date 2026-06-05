@@ -6,6 +6,7 @@ import FeaturedProjects from "../components/home/FeaturedProjects.astro";
 import Hero from "../components/home/Hero.astro";
 import Layout from "../layouts/Layout.astro";
 import { getConfigurationCollection } from "../lib/utils";
+import MetaTags from "../components/common/MetaTags.astro";
 
 const { data: config } = await getConfigurationCollection();
 
@@ -25,35 +26,16 @@ const featuredArticles = (
 
 <Layout>
   <Fragment slot="head">
-    <title>{config.globalMeta.title}</title>
-    <meta
-      name="description"
-      content={config.globalMeta.longDescription ?? config.globalMeta.description}
+    <MetaTags
+      title={config.globalMeta.title}
+      description={config.globalMeta.description}
+      longDescription={config.globalMeta.longDescription}
+      cardImage={config.globalMeta.cardImage}
+      keywords={config.globalMeta.keywords}
+      url={config.site.baseUrl}
+      languageCode={config.site.languageCode}
+      languageName={config.site.languageName}
     />
-    <meta property="og:title" content={config.globalMeta.title} />
-    <meta
-      property="og:description"
-      content={config.globalMeta.description}
-    />
-    {config.globalMeta.keywords && (
-      <meta name="keywords" content={config.globalMeta.keywords.join(", ")} />
-    )}
-    {config.globalMeta.cardImage && (
-      <meta property="og:image" content={config.globalMeta.cardImage} />
-    )}
-    <meta property="og:url" content={config.site.baseUrl} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={config.globalMeta.title} />
-    <meta
-      name="twitter:description"
-      content={config.globalMeta.description}
-    />
-    {config.globalMeta.cardImage && (
-      <meta name="twitter:image" content={config.globalMeta.cardImage} />
-    )}
-    <meta http-equiv="content-language" content={config.site.languageCode} />
-    <meta name="language" content={config.site.languageName} />
-    <link rel="canonical" href={config.site.baseUrl} />
   </Fragment>
   <Section class="my-16">
     <Hero />

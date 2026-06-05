@@ -1,0 +1,38 @@
+---
+export type Props = {
+  title: string;
+  description: string;
+  longDescription?: string;
+  cardImage?: string;
+  keywords?: string[];
+  url: string;
+  languageCode: string;
+  languageName: string;
+};
+
+const {
+  title,
+  description,
+  longDescription,
+  cardImage,
+  keywords,
+  url,
+  languageCode,
+  languageName,
+} = Astro.props;
+---
+
+<title>{title}</title>
+<meta name="description" content={longDescription ?? description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{keywords && <meta name="keywords" content={keywords.join(", ")} />}
+{cardImage && <meta property="og:image" content={cardImage} />}
+<meta property="og:url" content={url} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{cardImage && <meta name="twitter:image" content={cardImage} />}
+<meta http-equiv="content-language" content={languageCode} />
+<meta name="language" content={languageName} />
+<link rel="canonical" href={url} />

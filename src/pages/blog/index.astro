@@ -4,6 +4,7 @@ import ArticleSnippet from "../../components/ArticleSnippet.astro";
 import Section from "../../components/common/Section.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getConfigurationCollection } from "../../lib/utils";
+import MetaTags from "../../components/common/MetaTags.astro";
 
 const articles = (await getCollection("blog")).sort(
 	(a, b) => b.data.timestamp.valueOf() - a.data.timestamp.valueOf(),
@@ -14,35 +15,16 @@ const { data: config } = await getConfigurationCollection();
 
 <Layout>
     <Fragment slot="head">
-    <title>{config.blogMeta.title}</title>
-    <meta
-      name="description"
-      content={config.blogMeta.longDescription ?? config.blogMeta.description}
+    <MetaTags
+      title={config.blogMeta.title}
+      description={config.blogMeta.description}
+      longDescription={config.blogMeta.longDescription}
+      cardImage={config.blogMeta.cardImage}
+      keywords={config.blogMeta.keywords}
+      url={`${config.site.baseUrl}/blog`}
+      languageCode={config.site.languageCode}
+      languageName={config.site.languageName}
     />
-    <meta property="og:title" content={config.blogMeta.title} />
-    <meta
-      property="og:description"
-      content={config.blogMeta.description}
-    />
-    {config.blogMeta.keywords && (
-      <meta name="keywords" content={config.blogMeta.keywords.join(", ")} />
-    )}
-    {config.blogMeta.cardImage && (
-      <meta property="og:image" content={config.blogMeta.cardImage} />
-    )}
-    <meta property="og:url" content={`${config.site.baseUrl}/blog`} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={config.blogMeta.title} />
-    <meta
-      name="twitter:description"
-      content={config.blogMeta.description}
-    />
-    {config.blogMeta.cardImage && (
-      <meta name="twitter:image" content={config.blogMeta.cardImage} />
-    )}
-    <meta http-equiv="content-language" content={config.site.languageCode} />
-    <meta name="language" content={config.site.languageName} />
-    <link rel="canonical" href={`${config.site.baseUrl}/blog`} />
   </Fragment>
   <Section class="my-8">
     <div class="flex items-center gap-4 pt-8 pb-16">

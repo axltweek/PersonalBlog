@@ -2,48 +2,23 @@
 import Section from "../components/common/Section.astro";
 import Layout from "../layouts/Layout.astro";
 import { getConfigurationCollection } from "../lib/utils";
+import MetaTags from "../components/common/MetaTags.astro";
 
 const { data: config } = await getConfigurationCollection();
 ---
 
 <Layout>
   <Fragment slot="head">
-    <title>{config.notFoundMeta.title}</title>
-    <meta
-      name="description"
-      content={config.notFoundMeta.longDescription ??
-        config.notFoundMeta.description}
+    <MetaTags
+      title={config.notFoundMeta.title}
+      description={config.notFoundMeta.description}
+      longDescription={config.notFoundMeta.longDescription}
+      cardImage={config.notFoundMeta.cardImage}
+      keywords={config.notFoundMeta.keywords}
+      url={config.site.baseUrl}
+      languageCode={config.site.languageCode}
+      languageName={config.site.languageName}
     />
-    <meta property="og:title" content={config.notFoundMeta.title} />
-    <meta property="og:description" content={config.notFoundMeta.description} />
-    {
-      config.notFoundMeta.keywords && (
-        <meta
-          name="keywords"
-          content={config.notFoundMeta.keywords.join(", ")}
-        />
-      )
-    }
-    {
-      config.notFoundMeta.cardImage && (
-        <meta property="og:image" content={config.notFoundMeta.cardImage} />
-      )
-    }
-    <meta property="og:url" content={config.site.baseUrl} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={config.notFoundMeta.title} />
-    <meta
-      name="twitter:description"
-      content={config.notFoundMeta.description}
-    />
-    {
-      config.notFoundMeta.cardImage && (
-        <meta name="twitter:image" content={config.notFoundMeta.cardImage} />
-      )
-    }
-    <meta http-equiv="content-language" content={config.site.languageCode} />
-    <meta name="language" content={config.site.languageName} />
-    <link rel="canonical" href={config.site.baseUrl} />
   </Fragment>
   <Section class="mt-16">
     <h1 id="game-over" class="text-3xl sm:text-4xl font-display pb-4">
