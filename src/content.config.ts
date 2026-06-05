@@ -27,6 +27,13 @@ const configuration = defineCollection({
        * and is used to generate absolute URLs for links and metadata.
        */
       baseUrl: z.string(),
+
+      /**
+       * The language of the site, used in HTML meta tags.
+       * e.g. "en" and "English"
+       */
+      languageCode: z.string().default("en"),
+      languageName: z.string().default("English"),
     }),
 
     /**

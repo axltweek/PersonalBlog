@@ -3,6 +3,8 @@
 
 [_.site]
 baseUrl = ""
+languageCode = "en"
+languageName = "English"
 
 [_.globalMeta]
 title = "Zaggonaut"

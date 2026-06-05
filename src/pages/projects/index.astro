@@ -40,8 +40,8 @@ const { data: config } = await getConfigurationCollection();
     {config.projectMeta.cardImage && (
       <meta name="twitter:image" content={config.projectMeta.cardImage} />
     )}
-    <meta http-equiv="content-language" content="en" />
-    <meta name="language" content="English" />
+    <meta http-equiv="content-language" content={config.site.languageCode} />
+    <meta name="language" content={config.site.languageName} />
     <link rel="canonical" href={`${config.site.baseUrl}/projects`} />
   </Fragment>
   <Section class="py-4 my-8">

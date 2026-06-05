@@ -51,8 +51,8 @@ const featuredArticles = (
     {config.globalMeta.cardImage && (
       <meta name="twitter:image" content={config.globalMeta.cardImage} />
     )}
-    <meta http-equiv="content-language" content="en" />
-    <meta name="language" content="English" />
+    <meta http-equiv="content-language" content={config.site.languageCode} />
+    <meta name="language" content={config.site.languageName} />
     <link rel="canonical" href={config.site.baseUrl} />
   </Fragment>
   <Section class="my-16">
