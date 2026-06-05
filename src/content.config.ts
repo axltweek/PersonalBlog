@@ -161,12 +161,12 @@ const configuration = defineCollection({
       /**
        * The title displayed in the hero section.
        */
-      title: z.string().default("Zaggonaut"),
+      title: z.string().default("axltweek"),
 
       /**
        * The subtitle displayed in the hero section.
        */
-      subtitle: z.string().default("Retro-Inspired Theme &<br>Built for Astro"),
+      subtitle: z.string().default("Trust a pro"),
 
       /**
        * The URL of the hero image, used as a background image in the hero section.
@@ -191,7 +191,7 @@ const configuration = defineCollection({
       /**
        * The name of the site owner or author, used in various places throughout the site.
        */
-      name: z.string().default("Zaggonaut"),
+      name: z.string().default("axltweek"),
 
       /**
        * The GitHub profile URL of the site owner or author.

@@ -7,45 +7,45 @@ languageCode = "en"
 languageName = "English"
 
 [_.globalMeta]
-title = "Zaggonaut"
-description = "Retro-Inspired Theme & Built for Astro"
-longDescription = "Zaggonaut is a retro-inspired theme for Astro, built using TypeScript, TailwindCSS, and Astro."
+title = "axltweek"
+description = "Personal blog"
+longDescription = "Personal blog of the software developer."
 cardImage = "/hero-square-image.jpg"
 keywords = ["web development", "design", "technology"]
 
 [_.blogMeta]
-title = "Zaggonaut Blog"
+title = "axltweek blog"
 description = "Practical wisdom, unfiltered thoughts, and hot takes."
 longDescription = "Web development, tech trends, and the occasional programming mishap."
 cardImage = "/hero-square-image.jpg"
 keywords = ["web development", "design", "technology"]
 
 [_.projectMeta]
-title = "Zaggonaut Projects"
+title = "axltweek projects"
 description = "A list of my web development projects and developer tools."
 longDescription = "All of my projects, including both frontend and full-stack applications."
 cardImage = "/hero-square-image.jpg"
 keywords = ["web development", "design", "technology"]
 
 [_.notFoundMeta]
-title = "Zaggonaut 404"
+title = "axltweek 404"
 description = "The page you are looking for does not exist."
 longDescription = "The page you are looking for does not exist. Maybe it never existed. Spooky."
 cardImage = "/hero-square-image.jpg"
 
 [_.hero]
-title = "Zaggonaut"
-subtitle = "Retro-Inspired Theme &<br />Built for Astro"
+title = "axltweek"
+subtitle = "Trust a pro"
 image = "/hero-square-image.jpg"
 ctaText = "View Projects"
 ctaUrl = "/projects"
 
 [_.personal]
-name = "Zaggonaut"
-githubProfile = "https://github.com/RATIU5/zaggonaut"
-devtoProfile = "https://dev.to"
-linkedinProfile = "https://linkedin.com/"
-untappdProfile = "https://untappd.com"
+name = "axltweek"
+githubProfile = "https://github.com/axltweek"
+devtoProfile = "https://dev.to/axltweek"
+linkedinProfile = "https://www.linkedin.com/in/alexrykanov/"
+untappdProfile = "https://untappd.com/user/axltweek"
 
 [_.texts]
 articlesName = "Articles"
