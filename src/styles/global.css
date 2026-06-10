@@ -290,3 +290,18 @@
     animation: rotate-border 3s linear infinite;
   }
 }
+
+/* Override typography plugin prose table border colors.
+   Must be outside @layer so it wins over the plugin's layered styles. */
+.prose {
+  --tw-prose-td-borders: var(--color-zag-dark);
+  --tw-prose-th-borders: var(--color-zag-dark);
+  --tw-prose-hr: var(--color-zag-dark);
+  --tw-prose-body: var(--color-zag-dark);
+}
+:where(.dark, .dark *) .prose {
+  --tw-prose-td-borders: var(--color-zag-light);
+  --tw-prose-th-borders: var(--color-zag-light);
+  --tw-prose-hr: var(--color-zag-light);
+  --tw-prose-body: var(--color-zag-light);
+}
