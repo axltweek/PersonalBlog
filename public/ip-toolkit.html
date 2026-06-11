@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IP Toolkit</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222637;
+      --border: #2e3347;
+      --accent: #6c8ef5;
+      --accent2: #4ecdc4;
+      --accent3: #f7931a;
+      --text: #e2e6f0;
+      --muted: #7a8099;
+      --green: #4ade80;
+      --red: #f87171;
+      --yellow: #fbbf24;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    }
+
+    :root.light {
+      --bg: #ebebeb;
+      --surface: #f5f5f5;
+      --surface2: #e0e0e0;
+      --border: #c8c8c8;
+      --text: #171717;
+      --muted: #737373;
+    }
+
+    :root.light .rc-value,
+    :root.light .nb-val {
+      color: #171717;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.7;
+      font-size: 16px;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ══ TOOLKIT ══ */
+    .toolkit {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 12px;
+      height: calc(100vh - 24px);
+      display: flex;
+      flex-direction: column;
+    }
+    .toolkit-header {
+      padding: 16px 20px 0;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 2px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 8px 18px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.15s;
+      font-family: var(--font);
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .tab-pane { display: none; padding: 20px; overflow-y: auto; flex: 1; }
+    .tab-pane.active { display: block; }
+
+    /* Inputs */
+    .input-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+      align-items: flex-end;
+    }
+    .field { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+    .field label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+    .field input, .field select {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 7px;
+      font-family: var(--mono);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .field input:focus, .field select:focus { border-color: var(--accent); }
+    .field select { cursor: pointer; }
+    .btn {
+      padding: 8px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .btn:hover { opacity: 0.85; }
+
+    /* Results */
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .result-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px 14px;
+    }
+    .result-card .rc-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    .result-card .rc-value { font-family: var(--mono); font-size: 15px; font-weight: 700; color: #fff; word-break: break-all; }
+    .result-card .rc-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+
+    .error-msg { color: var(--red); font-size: 13px; margin-top: 6px; font-family: var(--mono); }
+
+    .notation-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .notation-box .nb-entry { text-align: center; }
+    .notation-box .nb-val { font-family: var(--mono); font-size: 15px; font-weight: 700; color: #fff; }
+    .notation-box .nb-label { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 3px; }
+    .notation-box .nb-eq { font-size: 18px; color: var(--muted); padding: 0 4px; }
+
+    /* Binary viz */
+    .bviz { margin-top: 16px; }
+    .bviz-row { display: flex; align-items: center; gap: 10px; margin: 6px 0; flex-wrap: wrap; }
+    .bviz-label { font-size: 12px; color: var(--muted); width: 90px; flex-shrink: 0; text-align: right; font-family: var(--mono); }
+    .bviz-bits { display: flex; gap: 3px; flex-wrap: wrap; }
+    .bviz-octet { display: flex; gap: 2px; }
+    .bviz-octet + .bviz-octet { margin-left: 5px; }
+    .bviz-bit {
+      width: 22px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .bviz-bit.net1  { background: rgba(108,142,245,0.3); color: var(--accent); }
+    .bviz-bit.net0  { background: rgba(108,142,245,0.08); color: rgba(108,142,245,0.4); }
+    .bviz-bit.host1 { background: rgba(78,205,196,0.25); color: var(--accent2); }
+    .bviz-bit.host0 { background: rgba(78,205,196,0.06); color: rgba(78,205,196,0.3); }
+    .bviz-result1 { background: rgba(247,147,26,0.3); color: var(--accent3); }
+    .bviz-result0 { background: rgba(247,147,26,0.08); color: rgba(247,147,26,0.3); }
+    .bviz-sep { width: 100%; height: 1px; background: var(--border); margin: 12px 0; }
+    .bviz-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; }
+    .bviz-legend .leg { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+    .leg-swatch { width: 12px; height: 12px; border-radius: 3px; }
+
+    /* VPC Planner */
+    .vpc-table-wrap { overflow-x: auto; margin-top: 16px; }
+    .vpc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .vpc-table th { background: var(--surface2); padding: 9px 12px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .vpc-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-family: var(--mono); }
+    .vpc-table tr:last-child td { border-bottom: none; }
+    .vpc-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .subnet-badge { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
+  </style>
+</head>
+<body>
+
+  <div class="toolkit">
+    <div class="toolkit-header">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('calc', this)">Subnet Calculator</button>
+        <button class="tab-btn" onclick="switchTab('binary', this)">Binary Visualizer</button>
+        <button class="tab-btn" onclick="switchTab('vpc', this)">VPC Subnet Planner</button>
+      </div>
+    </div>
+
+    <!-- TAB 1: Subnet Calculator -->
+    <div id="tab-calc" class="tab-pane active">
+      <div class="input-row">
+        <div class="field">
+          <label>IP Address</label>
+          <input type="text" id="calc-ip" value="192.168.1.42" placeholder="e.g. 192.168.1.42">
+        </div>
+        <div class="field" style="max-width:150px">
+          <label>Prefix / Mask</label>
+          <input type="text" id="calc-mask" value="/24" placeholder="/24 or 255.255.255.0">
+        </div>
+        <button class="btn" onclick="runCalc()">Calculate</button>
+      </div>
+      <div id="calc-error" class="error-msg"></div>
+      <div id="calc-results" class="result-grid"></div>
+      <div id="calc-notation" style="margin-top:16px"></div>
+    </div>
+
+    <!-- TAB 2: Binary Visualizer -->
+    <div id="tab-binary" class="tab-pane">
+      <div class="input-row">
+        <div class="field">
+          <label>IP Address</label>
+          <input type="text" id="bviz-ip" value="192.168.1.42" placeholder="e.g. 192.168.1.42">
+        </div>
+        <div class="field" style="max-width:150px">
+          <label>Prefix / Mask</label>
+          <input type="text" id="bviz-mask" value="/24" placeholder="/24 or 255.255.255.0">
+        </div>
+        <button class="btn" onclick="runBviz()">Visualize</button>
+      </div>
+      <div id="bviz-error" class="error-msg"></div>
+      <div id="bviz-output" class="bviz"></div>
+    </div>
+
+    <!-- TAB 3: VPC Subnet Planner -->
+    <div id="tab-vpc" class="tab-pane">
+      <div class="input-row">
+        <div class="field">
+          <label>Parent CIDR block</label>
+          <input type="text" id="vpc-cidr" value="10.10.0.0/16" placeholder="e.g. 10.10.0.0/16">
+        </div>
+        <div class="field" style="max-width:150px">
+          <label>Subnet prefix</label>
+          <select id="vpc-sub">
+            <option value="17">/17 (2 subnets)</option>
+            <option value="18">/18 (4 subnets)</option>
+            <option value="19">/19 (8 subnets)</option>
+            <option value="20">/20 (16 subnets)</option>
+            <option value="21">/21 (32 subnets)</option>
+            <option value="22">/22 (64 subnets)</option>
+            <option value="23">/23</option>
+            <option value="24" selected>/24 (common)</option>
+            <option value="25">/25</option>
+            <option value="26">/26</option>
+            <option value="27">/27</option>
+            <option value="28">/28</option>
+          </select>
+        </div>
+        <div class="field" style="max-width:140px">
+          <label>Show first N</label>
+          <select id="vpc-count">
+            <option value="4">4 subnets</option>
+            <option value="8" selected>8 subnets</option>
+            <option value="16">16 subnets</option>
+            <option value="32">32 subnets</option>
+          </select>
+        </div>
+        <button class="btn" onclick="runVpc()">Plan</button>
+      </div>
+      <div id="vpc-error" class="error-msg"></div>
+      <div id="vpc-summary" style="margin:12px 0;"></div>
+      <div id="vpc-output" class="vpc-table-wrap"></div>
+    </div>
+  </div>
+
+  <script>
+    function parseIP(str) {
+      const parts = str.trim().split('.');
+      if (parts.length !== 4) return null;
+      const nums = parts.map(Number);
+      if (nums.some(n => isNaN(n) || n < 0 || n > 255)) return null;
+      return nums;
+    }
+    function ipToInt(arr) { return ((arr[0] << 24) | (arr[1] << 16) | (arr[2] << 8) | arr[3]) >>> 0; }
+    function intToIP(n) { return [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.'); }
+    function parseMask(str) {
+      str = str.trim();
+      if (str.startsWith('/')) {
+        const p = parseInt(str.slice(1));
+        return (isNaN(p) || p < 0 || p > 32) ? null : p;
+      }
+      const parts = parseIP(str);
+      if (!parts) return null;
+      const n = ipToInt(parts);
+      const inv = (~n) >>> 0;
+      if ((inv & (inv + 1)) !== 0) return null;
+      let prefix = 0;
+      for (let i = 31; i >= 0; i--) { if ((n >>> i) & 1) prefix++; else break; }
+      return prefix;
+    }
+    function prefixToMask(p) { return p === 0 ? 0 : (0xFFFFFFFF << (32 - p)) >>> 0; }
+    function toBits(n) { const b = []; for (let i = 31; i >= 0; i--) b.push((n >>> i) & 1); return b; }
+    function fmt(n) { return n.toLocaleString(); }
+    function privateLabel(ip) {
+      const n = ipToInt(ip);
+      if ((n & 0xFF000000) >>> 0 === 0x0A000000) return '✦ Private (10.0.0.0/8)';
+      if ((n & 0xFFF00000) >>> 0 === 0xAC100000) return '✦ Private (172.16.0.0/12)';
+      if ((n & 0xFFFF0000) >>> 0 === 0xC0A80000) return '✦ Private (192.168.0.0/16)';
+      if ((n & 0xFF000000) >>> 0 === 0x7F000000) return '↩ Loopback (127.0.0.0/8)';
+      if ((n & 0xFFFF0000) >>> 0 === 0xA9FE0000) return '⚡ Link-local (169.254.0.0/16)';
+      return '🌐 Public';
+    }
+
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    function runCalc() {
+      const errEl = document.getElementById('calc-error');
+      const resEl = document.getElementById('calc-results');
+      const notEl = document.getElementById('calc-notation');
+      errEl.textContent = ''; resEl.innerHTML = ''; notEl.innerHTML = '';
+      const ip = parseIP(document.getElementById('calc-ip').value);
+      const prefix = parseMask(document.getElementById('calc-mask').value);
+      if (!ip) { errEl.textContent = '✗ Invalid IP address'; return; }
+      if (prefix === null) { errEl.textContent = '✗ Invalid mask (use /24 or 255.255.255.0)'; return; }
+      const maskInt = prefixToMask(prefix);
+      const ipInt = ipToInt(ip);
+      const networkInt = (ipInt & maskInt) >>> 0;
+      const broadcastInt = (networkInt | (~maskInt >>> 0)) >>> 0;
+      const total = Math.pow(2, 32 - prefix);
+      const usable = Math.max(0, total - 2);
+      const firstH = total > 2 ? networkInt + 1 : networkInt;
+      const lastH = total > 2 ? broadcastInt - 1 : broadcastInt;
+      const cards = [
+        { label: 'Network Address', value: intToIP(networkInt), sub: 'First address in subnet' },
+        { label: 'Broadcast Address', value: intToIP(broadcastInt), sub: 'Last address in subnet' },
+        { label: 'Subnet Mask', value: intToIP(maskInt), sub: '/' + prefix },
+        { label: 'First Usable Host', value: intToIP(firstH), sub: '' },
+        { label: 'Last Usable Host', value: intToIP(lastH), sub: '' },
+        { label: 'Usable Hosts', value: fmt(usable), sub: 'of ' + fmt(total) + ' total' },
+        { label: 'Prefix Length', value: '/' + prefix, sub: prefix + ' network bits, ' + (32 - prefix) + ' host bits' },
+        { label: 'IP Type', value: privateLabel(ip), sub: '' },
+      ];
+      resEl.innerHTML = cards.map(c => `<div class="result-card"><div class="rc-label">${c.label}</div><div class="rc-value">${c.value}</div>${c.sub ? `<div class="rc-sub">${c.sub}</div>` : ''}</div>`).join('');
+      notEl.innerHTML = `<div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Notation equivalences</div><div class="notation-box" style="gap:8px;padding:10px 14px;flex-wrap:nowrap;overflow-x:auto;"><div class="nb-entry" style="white-space:nowrap;flex-shrink:0;"><div class="nb-val" style="font-size:11px">${intToIP(networkInt)}/${prefix}</div><div class="nb-label">CIDR</div></div><div class="nb-eq" style="font-size:14px;flex-shrink:0;">=</div><div class="nb-entry" style="white-space:nowrap;flex-shrink:0;"><div class="nb-val" style="font-size:11px">${intToIP(networkInt)} / ${intToIP(maskInt)}</div><div class="nb-label">Network / Mask</div></div><div class="nb-eq" style="font-size:14px;flex-shrink:0;">=</div><div class="nb-entry" style="white-space:nowrap;flex-shrink:0;"><div class="nb-val" style="font-size:11px">${intToIP(networkInt)} – ${intToIP(broadcastInt)}</div><div class="nb-label">Range</div></div></div>`;
+    }
+
+    function renderBitRow(label, bits, prefix, colorMode) {
+      let html = `<div class="bviz-row"><div class="bviz-label">${label}</div><div class="bviz-bits">`;
+      for (let o = 0; o < 4; o++) {
+        html += `<div class="bviz-octet">`;
+        for (let b = 0; b < 8; b++) {
+          const pos = o * 8 + b; const val = bits[pos]; let cls = '';
+          if (colorMode === 'mask') cls = pos < prefix ? 'net1' : 'net0';
+          else if (colorMode === 'ip') cls = pos < prefix ? (val ? 'net1' : 'net0') : (val ? 'host1' : 'host0');
+          else if (colorMode === 'result') cls = pos < prefix ? (val ? 'bviz-result1' : 'bviz-result0') : (val ? 'host1' : 'host0');
+          html += `<div class="bviz-bit ${cls}">${val}</div>`;
+        }
+        html += `</div>`;
+        if (o < 3) html += `<div style="width:5px"></div>`;
+      }
+      html += `</div></div>`;
+      return html;
+    }
+
+    function runBviz() {
+      const errEl = document.getElementById('bviz-error');
+      const outEl = document.getElementById('bviz-output');
+      errEl.textContent = ''; outEl.innerHTML = '';
+      const ip = parseIP(document.getElementById('bviz-ip').value);
+      const prefix = parseMask(document.getElementById('bviz-mask').value);
+      if (!ip) { errEl.textContent = '✗ Invalid IP address'; return; }
+      if (prefix === null) { errEl.textContent = '✗ Invalid mask'; return; }
+      const ipInt = ipToInt(ip), maskInt = prefixToMask(prefix), networkInt = (ipInt & maskInt) >>> 0;
+      const ipBits = toBits(ipInt), maskBits = toBits(maskInt), netBits = toBits(networkInt);
+      const maskOctets = [maskInt >>> 24 & 255, maskInt >>> 16 & 255, maskInt >>> 8 & 255, maskInt & 255];
+      const netOctets = [networkInt >>> 24 & 255, networkInt >>> 16 & 255, networkInt >>> 8 & 255, networkInt & 255];
+      const W = 22 * 8 + 5 * 7;
+      let html = `<div class="bviz-row" style="margin-bottom:2px"><div class="bviz-label" style="font-size:10px">decimal</div><div style="display:flex;gap:5px;font-family:var(--mono);font-size:12px;">${ip.map(v => `<div style="width:${W / 4}px;text-align:center;color:var(--muted)">${v}</div>`).join('')}</div></div>`;
+      html += renderBitRow('IP', ipBits, prefix, 'ip');
+      html += `<div class="bviz-row" style="margin-bottom:2px;margin-top:6px"><div class="bviz-label" style="font-size:10px">decimal</div><div style="display:flex;gap:5px;font-family:var(--mono);font-size:12px;">${maskOctets.map(v => `<div style="width:${W / 4}px;text-align:center;color:var(--muted)">${v}</div>`).join('')}</div></div>`;
+      html += renderBitRow(`Mask (/${prefix})`, maskBits, prefix, 'mask');
+      html += `<div class="bviz-sep"></div><div style="font-size:12px;color:var(--muted);margin-bottom:6px;">IP <span style="color:var(--yellow);font-weight:700">AND</span> Mask → Network Address</div>`;
+      html += `<div class="bviz-row" style="margin-bottom:2px"><div class="bviz-label" style="font-size:10px">decimal</div><div style="display:flex;gap:5px;font-family:var(--mono);font-size:12px;">${netOctets.map(v => `<div style="width:${W / 4}px;text-align:center;color:var(--accent3)">${v}</div>`).join('')}</div></div>`;
+      html += renderBitRow('Network', netBits, prefix, 'result');
+      html += `<div class="bviz-legend"><div class="leg"><div class="leg-swatch" style="background:rgba(108,142,245,0.3)"></div>Network bit (1)</div><div class="leg"><div class="leg-swatch" style="background:rgba(108,142,245,0.08)"></div>Network bit (0)</div><div class="leg"><div class="leg-swatch" style="background:rgba(78,205,196,0.25)"></div>Host bit (1)</div><div class="leg"><div class="leg-swatch" style="background:rgba(78,205,196,0.06)"></div>Host bit (0)</div><div class="leg"><div class="leg-swatch" style="background:rgba(247,147,26,0.3)"></div>Result bit (1)</div></div>`;
+      outEl.innerHTML = html;
+    }
+
+    const COLORS = ['#6c8ef5', '#4ecdc4', '#f7931a', '#f87171', '#a78bfa', '#34d399', '#fbbf24', '#60a5fa', '#f472b6', '#86efac', '#c084fc', '#fb923c', '#38bdf8', '#e879f9', '#4ade80', '#818cf8'];
+
+    function runVpc() {
+      const errEl = document.getElementById('vpc-error');
+      const sumEl = document.getElementById('vpc-summary');
+      const outEl = document.getElementById('vpc-output');
+      errEl.textContent = ''; sumEl.innerHTML = ''; outEl.innerHTML = '';
+      const raw = document.getElementById('vpc-cidr').value.trim();
+      const subPrefix = parseInt(document.getElementById('vpc-sub').value);
+      const showCount = parseInt(document.getElementById('vpc-count').value);
+      const slashIdx = raw.lastIndexOf('/');
+      if (slashIdx < 0) { errEl.textContent = '✗ Enter a CIDR block like 10.10.0.0/16'; return; }
+      const parentIP = parseIP(raw.slice(0, slashIdx));
+      const parentPrefix = parseInt(raw.slice(slashIdx + 1));
+      if (!parentIP || isNaN(parentPrefix) || parentPrefix < 0 || parentPrefix > 30) { errEl.textContent = '✗ Invalid parent CIDR'; return; }
+      if (subPrefix <= parentPrefix) { errEl.textContent = '✗ Subnet prefix must be larger than parent prefix'; return; }
+      const parentMask = prefixToMask(parentPrefix);
+      const parentNet = (ipToInt(parentIP) & parentMask) >>> 0;
+      const subSize = Math.pow(2, 32 - subPrefix);
+      const totalSubnets = Math.pow(2, subPrefix - parentPrefix);
+      const usable = Math.max(0, subSize - 2);
+      sumEl.innerHTML = `<div class="notation-box" style="gap:14px;padding:12px 14px"><div class="nb-entry"><div class="nb-val">${intToIP(parentNet)}/${parentPrefix}</div><div class="nb-label">Parent block</div></div><div class="nb-eq">→</div><div class="nb-entry"><div class="nb-val">${fmt(totalSubnets)}</div><div class="nb-label">× /${subPrefix} subnets</div></div><div class="nb-eq">=</div><div class="nb-entry"><div class="nb-val">${fmt(usable)}</div><div class="nb-label">usable hosts each</div></div></div>`;
+      const display = Math.min(showCount, totalSubnets);
+      let rows = '';
+      for (let i = 0; i < display; i++) {
+        const netInt = (parentNet + i * subSize) >>> 0;
+        const broadInt = (netInt + subSize - 1) >>> 0;
+        const firstH = subSize > 2 ? netInt + 1 : netInt;
+        const lastH = subSize > 2 ? broadInt - 1 : broadInt;
+        rows += `<tr><td><span class="subnet-badge" style="background:${COLORS[i % COLORS.length]}"></span>${i + 1}</td><td>${intToIP(netInt)}/${subPrefix}</td><td>${intToIP(netInt)}</td><td>${intToIP(broadInt)}</td><td>${intToIP(firstH)} – ${intToIP(lastH)}</td><td>${fmt(usable)}</td></tr>`;
+      }
+      if (totalSubnets > display) rows += `<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:10px">… and ${fmt(totalSubnets - display)} more subnets</td></tr>`;
+      outEl.innerHTML = `<table class="vpc-table"><thead><tr><th>#</th><th>CIDR</th><th>Network</th><th>Broadcast</th><th>Usable Range</th><th>Hosts</th></tr></thead><tbody>${rows}</tbody></table>`;
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.classList.toggle('light', theme === 'light');
+    }
+
+    // Init from parent's localStorage on load
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme(localStorage.getItem('theme') ?? 'dark');
+      runCalc(); runBviz(); runVpc();
+    });
+
+    // React to theme toggle from parent page
+    window.addEventListener('message', (e) => {
+      if (e.data?.theme) applyTheme(e.data.theme);
+    });
+  </script>
+</body>
+</html>
