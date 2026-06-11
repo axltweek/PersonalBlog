@@ -30,6 +30,9 @@
 
     const isDark = element.classList.contains("dark");
     localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    const theme = isDark ? "dark" : "light";
+    document.querySelectorAll("iframe").forEach(f => f.contentWindow?.postMessage({ theme }, "*"));
   };
 
   document
