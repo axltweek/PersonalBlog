@@ -305,3 +305,19 @@
   --tw-prose-hr: var(--color-zag-light);
   --tw-prose-body: var(--color-zag-light);
 }
+
+/* Calm down inline code. The typography plugin wraps inline <code> in literal
+   backtick glyphs (::before/::after) and makes it bold + smaller; since the
+   whole prose is already monospace, that just adds noise. Drop the backticks
+   and give code a faint chip instead. Excludes code inside <pre> blocks.
+   Outside @layer so it wins over the plugin's layered styles. */
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *))::before,
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *))::after {
+  content: none;
+}
+.prose :where(code):not(:where(pre code, [class~="not-prose"] *)) {
+  font-weight: 400;
+  background-color: color-mix(in srgb, currentColor 8%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
